@@ -48,7 +48,7 @@ Your implementation should cover the following functionalities:
 - Fork this repository.
 - Complete your project as described above, within your fork.
 - Push all of your changes to your fork on GitHub and submit a pull request to this repository.
-- Email [Insert Contact Email] with the subject "VisionMark Backend Developer Task Submission" and include your GitHub repository link in the email.
+- Email hr@thewasserstoff.com with the subject "VisionMark Backend Developer Task Submission" and include your GitHub repository link in the email.
 
 ## Q&A
 
