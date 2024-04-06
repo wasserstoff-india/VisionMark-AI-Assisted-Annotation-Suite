@@ -207,7 +207,7 @@ def update_annotations(image_id, annotations):
 - **User Experience:** The UI should be as straightforward as possible, reducing the cognitive load on users. This includes clear instructions, undo/redo options, and feedback on successful submission or errors.
 - **Scalability:** As the number of images and annotations grows, the system should maintain performance, ensuring quick load times and responsive interaction for users.
 
-#System Architecture
+### System Architecture
 
 Let's expand on each component of the system architecture for the VisionMark project, providing a detailed and technical explanation for how each part operates and interacts within the broader system.
 
