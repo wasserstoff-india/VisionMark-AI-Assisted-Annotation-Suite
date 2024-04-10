@@ -2,10 +2,11 @@ const multer = require("multer");
 const Image = require("../models/Image");
 const path = require("path");
 const { spawn } = require("child_process");
-const jwt = require('jsonwebtoken');
-const secretKey = 'itsasecret';
+const jwt = require("jsonwebtoken");
+const secretKey = "itsasecret";
 
 // Multer configuration
+// Saving file to local disk. AWS S3 bucket can be used for storing uploaded image
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/");
@@ -39,17 +40,20 @@ const uploadImage = (req, res, next) => {
     const imagePath = path.join(__dirname, "..", "uploads", req.file.filename);
 
     // Annotate the uploaded image
+    // Simulation of annotation of image i.e Extraction of color information and returning average of it
+    // Annotation.py is used for annotation purposes
     annotateImage(imagePath)
       .then((annotation) => {
-        const token = req.headers.authorization.split(' ')[1];
-        if (!token) return res.status(401).send('Access denied. No token provided.');
+        const token = req.headers.authorization.split(" ")[1];
+        if (!token)
+          return res.status(401).send("Access denied. No token provided.");
         try {
           const decoded = jwt.verify(token, secretKey);
           const image = new Image({
             filename: req.file.filename,
             filePath: imagePath,
             annotation,
-            user : decoded.user.id
+            user: decoded.user.id,
           });
           image
             .save()
@@ -69,6 +73,7 @@ const uploadImage = (req, res, next) => {
   });
 };
 
+// Annotation of image uploaded
 function annotateImage(imagePath) {
   return new Promise((resolve, reject) => {
     const pythonProcess = spawn(
@@ -79,15 +84,12 @@ function annotateImage(imagePath) {
       ]
     );
     let annotation = "";
-
     pythonProcess.stdout.on("data", (data) => {
-      annotation += data.toString();
+      annotation += data.toString(); // Concates annotation by python script to variable annotation
     });
 
     pythonProcess.on("close", (code) => {
-      console.log(`Child process exited with code ${code}`);
       if (code === 0) {
-        console.log("🚀 ~ pythonProcess.on ~ annotation:", annotation);
         resolve(annotation.trim()); // Resolve the promise with the annotation data
       } else {
         reject(new Error(`Child process exited with non-zero code ${code}`));
@@ -95,7 +97,6 @@ function annotateImage(imagePath) {
     });
 
     pythonProcess.on("error", (err) => {
-      console.error("Failed to spawn Python process:", err);
       reject(err); // Reject the promise with the error
     });
   });

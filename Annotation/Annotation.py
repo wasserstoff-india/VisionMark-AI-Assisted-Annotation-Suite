@@ -10,7 +10,7 @@ def annotate_image(image_path):
         if image is None:
             return "Error: Failed to read the image file"
         
-        # Perform annotation (example: extract color information)
+        # Perform annotation
         color_annotation = extract_color_annotation(image)
         
         # Return the annotation
@@ -19,7 +19,7 @@ def annotate_image(image_path):
         return f"Error: An error occurred during image annotation - {str(e)}"
 
 def extract_color_annotation(image):
-    # Example: Extract color information (average color)
+    # Extract color information (average color)
     avg_color = image.mean(axis=0).mean(axis=0)
     return avg_color
 
