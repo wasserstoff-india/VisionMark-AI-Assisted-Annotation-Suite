@@ -1,7 +1,9 @@
 const multer = require("multer");
-// const Image = require('../models/Image');
+const Image = require("../models/Image");
 const path = require("path");
 const { spawn } = require("child_process");
+const jwt = require('jsonwebtoken');
+const secretKey = 'itsasecret';
 
 // Multer configuration
 const storage = multer.diskStorage({
@@ -37,11 +39,33 @@ const uploadImage = (req, res, next) => {
     const imagePath = path.join(__dirname, "..", "uploads", req.file.filename);
 
     // Annotate the uploaded image
-    annotateImage(imagePath).then((annotation) => {
-      res
-        .status(200)
-        .json({ message: "Image uploaded and annotated", annotation });
-    });
+    annotateImage(imagePath)
+      .then((annotation) => {
+        const token = req.headers.authorization.split(' ')[1];
+        if (!token) return res.status(401).send('Access denied. No token provided.');
+        try {
+          const decoded = jwt.verify(token, secretKey);
+          const image = new Image({
+            filename: req.file.filename,
+            filePath: imagePath,
+            annotation,
+            user : decoded.user.id
+          });
+          image
+            .save()
+            .then(() => {
+              res
+                .status(200)
+                .json({ message: "Image uploaded and annotated", annotation });
+            })
+            .catch((error) => {
+              return res.status(500).json({ error: "Internal Server Error" });
+            });
+        } catch (error) {
+          return res.status(500).json({ error: "Internal Server Error" });
+        }
+      })
+      .catch((err) => {});
   });
 };
 
@@ -57,7 +81,6 @@ function annotateImage(imagePath) {
     let annotation = "";
 
     pythonProcess.stdout.on("data", (data) => {
-      console.log("🚀 ~ pythonProcess.stdout.on ~ data:", data);
       annotation += data.toString();
     });
 
@@ -65,7 +88,7 @@ function annotateImage(imagePath) {
       console.log(`Child process exited with code ${code}`);
       if (code === 0) {
         console.log("🚀 ~ pythonProcess.on ~ annotation:", annotation);
-        resolve(annotation); // Resolve the promise with the annotation data
+        resolve(annotation.trim()); // Resolve the promise with the annotation data
       } else {
         reject(new Error(`Child process exited with non-zero code ${code}`));
       }
@@ -78,8 +101,4 @@ function annotateImage(imagePath) {
   });
 }
 
-getAllImages = (req, res) => {
-  // Logic to get all images from MongoDB
-};
-
-module.exports = { getAllImages, uploadImage };
+module.exports = { uploadImage };

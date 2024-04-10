@@ -1,4 +1,5 @@
 import cv2
+import sys
 
 def annotate_image(image_path):
     try:
@@ -22,4 +23,9 @@ def extract_color_annotation(image):
     avg_color = image.mean(axis=0).mean(axis=0)
     return avg_color
 
-annotate_image('/Users/nishantmalik/VisionMark-AI-Assisted-Annotation-Suite/uploads/cat.jpeg')
+
+
+if __name__ == "__main__":
+    # Get the image path from command line arguments
+    image_path = sys.argv[1]
+    annotate_image(image_path)
