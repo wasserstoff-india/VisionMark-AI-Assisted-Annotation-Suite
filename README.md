@@ -18,3 +18,7 @@ use this link start using the app
 - http://localhost:3000/{API_ENDPOINT}
 
 Replace API_ENDPOINT with the endpint you want to use
+
+
+# Video link of Approach and explanation
+- https://drive.google.com/file/d/1txq7ySOLX81A12yveEJCFJoiZtyuRHZQ/view?usp=sharing
