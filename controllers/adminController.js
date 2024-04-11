@@ -19,15 +19,20 @@ const REQUEST_STATUS = {
 // Review images controller for Admin user
 const reviewImages = async (req, res) => {
   try {
-    const images = await Image.find().sort({ updatedAt: -1 });
-    res.status(200).json(images);
+    const images = await Image.find({ requestStatus: "PENDING" }).sort({
+      updatedAt: -1,
+    });
+    if(!images.length){
+      return res.status(404).json({error : "Pending requests not found"});
+    }
+    return res.status(200).json(images);
   } catch (error) {
     return res.status(500).send(error);
   }
 };
 
 // Approve and reject request for Admin user
-// both for reject and approve 
+// both for reject and approve
 const handleRequests = async (req, res) => {
   try {
     const requestedImage = await Image.findOne({ _id: req.body.id });

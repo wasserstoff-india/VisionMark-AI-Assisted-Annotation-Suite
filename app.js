@@ -1,5 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
+
 
 const config = require('./config');
 const imageRoutes = require('./routes/imageRoutes');
@@ -10,12 +12,12 @@ const exportRoutes = require('./routes/exportRoutes');
 const app = express();
 
 // Connect to MongoDB
-mongoose.connect("mongodb+srv://nishantmalik2015:qYRh1Om8mNf8G7ih@cluster0.0uzogt3.mongodb.net/Vision")
+mongoose.connect(config.mongoURI)
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 
-// Middleware
 app.use(express.json());
+app.use(cors());
 
 // Routes
 app.use('/api/images', imageRoutes);
