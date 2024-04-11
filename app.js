@@ -10,7 +10,7 @@ const exportRoutes = require('./routes/exportRoutes');
 const app = express();
 
 // Connect to MongoDB
-mongoose.connect(config.mongoURI)
+mongoose.connect("mongodb+srv://nishantmalik2015:qYRh1Om8mNf8G7ih@cluster0.0uzogt3.mongodb.net/Vision")
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 
