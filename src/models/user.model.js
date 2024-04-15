@@ -36,6 +36,19 @@ const userSchema = mongoose.Schema(
       timestamps: true,
     }
   );
+  userSchema.statics.isEmailUnique = async function (email) {
+    const user = await this.findOne({ email });
+    return !!user;
+  };
+
+  userSchema.statics.fetchUserByEmail = async function(email){
+    const user = await this.findOne({ email });
+    return user;
+  }
+  userSchema.statics.fetchUserById = async function(id){
+    const user = await this.findOne({ id });
+    return user;
+  }
 
   const User = mongoose.model('User',userSchema)
   module.exports = User
