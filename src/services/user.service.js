@@ -5,13 +5,17 @@ const ApiError = require("../utils/ApiError");
 const saltRound = 10;
 
 module.exports.createUser = async (reqBody) => {
-  if (await User.isEmailUnique(reqBody.email)) {
-    throw new ApiError(httpStatus.CONFLICT, "User already exists with email.");
-  }
   try {
+    if (await User.isEmailUnique(reqBody.email)) {
+      throw new ApiError(httpStatus.CONFLICT, "User already exists with email.");
+    }
+    const users = await User.find({})
+    if(users.length==0){
+      reqBody.role="admin"
+    }
     const hashedPassword = await bcrypt.hash(reqBody.password, saltRound);
     reqBody.password = hashedPassword;
-    return User.create(reqBody);
+    return await User.create(reqBody);
   } catch (err) {
     throw new ApiError(
       httpStatus.INTERNAL_SERVER_ERROR,
@@ -25,7 +29,7 @@ module.exports.getUserById= async(id)=>{
     return user
 }
 
-module.exports.getUserByEmail = async(email)=>{
-    const user = await User.fetchUserByEmail(email)
-    return user
+module.exports.getAllUsers = async()=>{
+  const users = await User.find({}).select('-password')
+  return users
 }
