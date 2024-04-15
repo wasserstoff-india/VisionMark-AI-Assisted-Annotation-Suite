@@ -25,3 +25,18 @@ module.exports.registerValidation = async (req, res, next) => {
   }
   next();
 };
+
+
+module.exports.loginEmailValidation = async (req, res, next) => {
+  const rules = [
+    body("email").trim().isEmail().notEmpty().withMessage("Email is required."),
+    body("password").notEmpty().withMessage("Password is required.")
+   ];
+
+  await Promise.all(rules.map((rule) => rule.run(req)));
+  const validationErrors = validationResult(req);
+  if (!validationErrors.isEmpty()) {
+   return  next(new ApiError(httpStatus.BAD_REQUEST, validationErrors.array()[0].msg))
+  }
+  next();
+};

@@ -46,7 +46,7 @@ const userSchema = mongoose.Schema(
     return user;
   }
   userSchema.statics.fetchUserById = async function(id){
-    const user = await this.findOne({ id });
+    const user = await User.findById(id).select("-password");
     return user;
   }
 
