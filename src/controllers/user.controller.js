@@ -1,10 +1,10 @@
 const httpStatus = require('http-status')
-const userService = require('../services/user.service')
+const {getAllUsers,getUserById} = require('../services/user.service')
 const asyncHandler =  require('../utils/asyncHandler')
 
 
 module.exports.getUserById = asyncHandler(async (req,res)=>{
-    const user = await userService.getUserById(req.params.id)
+    const user = await getUserById(req.params.id)
     if(!user){
         throw new ApiError(httpStatus.NOT_FOUND, "User not found.");
     }
@@ -12,6 +12,6 @@ module.exports.getUserById = asyncHandler(async (req,res)=>{
 })
 
 module.exports.getAllUsers = asyncHandler(async (req,res)=>{
-    const users = await userService.getAllUsers()
+    const users = await getAllUsers()
     res.status(httpStatus.OK).send(users)
 })
