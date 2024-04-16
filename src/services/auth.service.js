@@ -2,9 +2,8 @@ const httpStatus = require('http-status');
 const bcrypt = require('bcrypt')
 const ApiError = require('../utils/ApiError');
 const User = require('../models/user.model')
-const userService = require('./user.service')
-const tokenService = require('./token.service')
-const saltRound=10
+const envVariables = require('../configurations/validate.env')
+
 
 module.exports.loginWithPassword=async (reqBody)=>{
     const user = await User.fetchUserByEmail(reqBody.email)
@@ -12,4 +11,10 @@ module.exports.loginWithPassword=async (reqBody)=>{
         throw new ApiError(httpStatus.BAD_REQUEST,"Incorrect email or password")
     }
     return user
+}
+
+module.exports.getUserIdFromToken=async()=>{
+    const token = req.headers.authorization.split(" ")[1];
+    const decode = await jwt.verify(token, envVariables.jwt_access_secret);
+    return decode.userId
 }

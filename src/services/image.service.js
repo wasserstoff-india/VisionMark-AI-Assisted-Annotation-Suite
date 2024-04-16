@@ -15,3 +15,13 @@ module.exports.getImagesWithStatus=async(status)=>{
     next( new ApiError(httpStatus.INTERNAL_SERVER_ERROR,"Something went wrong"))
   }
 }
+
+module.exports.getImageById=async(id)=>{
+  const image = await Image.findById(id)
+  return image
+}
+
+module.exports.getAllImagesForUser=async(userId)=>{
+  const images = await Image.find({userId:userId})
+  return images
+}

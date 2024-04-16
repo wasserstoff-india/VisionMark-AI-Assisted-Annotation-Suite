@@ -1,14 +1,14 @@
 const httpStatus = require('http-status')
-const userService = require('../services/user.service')
+const {createUser} = require('../services/user.service')
 const asyncHandler =  require('../utils/asyncHandler')
-const tokenService = require('../services/token.service')
+const {generateAuthTokens,newAccessToken} = require('../services/token.service')
 const authService = require('../services/auth.service')
 const ApiError = require('../utils/ApiError')
 
 
 module.exports.registerUser = asyncHandler(async (req,res)=>{
-    const user =await userService.createUser(req.body)
-    const token=await tokenService.generateAuthTokens(user._id)
+    const user =await createUser(req.body)
+    const token=await generateAuthTokens(user._id)
     let userObj = {...user._doc}
     delete userObj.password
     res.cookie('jwt',token.refreshToken, {
@@ -21,7 +21,7 @@ module.exports.registerUser = asyncHandler(async (req,res)=>{
 
 module.exports.loginUser = asyncHandler(async(req,res)=>{
     const user = await authService.loginWithPassword(req.body)
-    const token = await tokenService.generateAuthTokens(user._id)
+    const token = await generateAuthTokens(user._id)
     let userObj = {...user._doc}
     delete userObj.password
     res.cookie('jwt',token.refreshToken,{
@@ -46,7 +46,7 @@ module.exports.refresh=asyncHandler(async(req,res)=>{
         throw new ApiError(httpStatus.UNAUTHORIZED,"Unauthorized user")
     }
     const cookie = req.cookie('jwt')
-    const token = await tokenService.newAccessToken(cookie)
+    const token = await newAccessToken(cookie)
     res.send(httpStatus.OK).json({
         message:"Token is refreshed.",
         token:token

@@ -15,9 +15,9 @@ const annotationSchema = new mongoose.Schema({
 
 const imageSchema = new mongoose.Schema({
         userId:{
-            type:String,
-            required:true,
-            unique: true
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'User',
+            required:true
         },
         image:{
             type:String,
