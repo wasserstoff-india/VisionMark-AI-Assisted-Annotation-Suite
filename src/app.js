@@ -10,6 +10,7 @@ const server = express()
 server.use(cors())
 server.use(compression())
 server.use(cookieParser())
+server.use(express.static('public'))
 server.use(bodyParser.urlencoded({extended:true}))
 server.use(bodyParser.json())
 
