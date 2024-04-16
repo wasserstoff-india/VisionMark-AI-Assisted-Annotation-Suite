@@ -48,8 +48,7 @@ module.exports.refresh=asyncHandler(async(req,res)=>{
     const cookie = req.cookie('jwt')
     const token = await tokenService.newAccessToken(cookie)
     res.send(httpStatus.OK).json({
-        message:"New is refreshed.",
+        message:"Token is refreshed.",
         token:token
     })
-
 })
