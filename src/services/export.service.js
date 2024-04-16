@@ -5,11 +5,19 @@ const { parse } = require("js2xmlparser");
 const { getApprovedImagesWithCustomFields } = require("./image.service");
 const exportPath = path.join(path.resolve(), "src", "public", "export");
 
+/**
+ * Service to check type of export data and fetching the images from DB
+ * @param {*} type 
+ */
 module.exports.exportData = async (type) => {
+  //Fetch all the approved images from DB
   const images = await getApprovedImagesWithCustomFields();
+  // Check whether the path for exporting file exists or not
   if (!fs.existsSync(exportPath)) {
+    //Creating a directory for exporting file if not exists
     fs.mkdirSync(exportPath, { recursive: true });
   }
+  //Checking the type of export data
   if (type === "csv") {
     await this.csv(images);
   } else if (type === "xml") {
@@ -21,6 +29,10 @@ module.exports.exportData = async (type) => {
   }
 };
 
+/**
+ * CSV service to create csv file and writing csv data
+ * @param {*} images 
+ */
 module.exports.csv = async (images) => {
   const csvHeader = [
     { id: "label", title: "Label" },
@@ -35,6 +47,7 @@ module.exports.csv = async (images) => {
     header: csvHeader,
   });
   let csvData = [];
+  //Creating array to format data in csv
   images.forEach((data) => {
     data.annotations.forEach((annotation) => {
       csvData.push({
@@ -45,7 +58,7 @@ module.exports.csv = async (images) => {
       });
     });
   });
-
+  //Writing the data to csv file
   await csvWriter
     .writeRecords(csvData)
     .then(() => {
@@ -56,7 +69,12 @@ module.exports.csv = async (images) => {
     });
 };
 
+/**
+ * Service to fetch js object data and parse to xml and write to xml file
+ * @param {*} images 
+ */
 module.exports.xml = async (images) => {
+  //Parsing the array and converting it to xml format
   const xmlData = parse(
     "images",
     images.flatMap(({ annotations }) =>
@@ -86,6 +104,10 @@ module.exports.xml = async (images) => {
   );
 };
 
+/**
+ * Service to write array to json file
+ * @param {*} images 
+ */
 module.exports.json = async (images) => {
   let dataArr = [];
   images.forEach((data) => {

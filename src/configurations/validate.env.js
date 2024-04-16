@@ -1,8 +1,14 @@
 const dotenv = require('dotenv');
 const path = require('path');
 const Joi = require('joi');
-
+/**
+ * Load .env file to process.env
+ */
 dotenv.config({ path: path.join(path.resolve(), './.env') });
+
+/**
+ * Validation of .env variables for server, mongoDB url, secret key and expiry time for jwt token
+ */
 const envSchema = Joi.object()
   .keys({
     PORT: Joi.number().default(8000),
@@ -16,11 +22,16 @@ const envSchema = Joi.object()
   .unknown();
 
 const { value: envVars, error } = envSchema.prefs({ errors: { label: 'key' } }).validate(process.env);
-
+/**
+ * Throw error if any error occured
+ */
 if (error) {
   throw new Error(`Config validation error: ${error.message}`);
 }
 
+/**
+ * Export the enviables after laoding and validation from .env file
+ */
 module.exports = {
   env: envVars.NODE_ENV,
   port: envVars.PORT,
