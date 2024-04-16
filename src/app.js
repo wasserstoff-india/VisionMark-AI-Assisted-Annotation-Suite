@@ -3,6 +3,8 @@ const cors = require('cors')
 const compression = require('compression')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
+const swagger = require('swagger-ui-express')
+const apiDocs = require('./swagger.json')
 const {errorHandler} =require('./middlewares/error.middleware')
 const server = express()
 
@@ -13,7 +15,7 @@ server.use(cookieParser())
 server.use(express.static('public'))
 server.use(bodyParser.urlencoded({extended:true}))
 server.use(bodyParser.json())
-
+server.use('/api-docs',swagger.serve,swagger.setup(apiDocs))
 server.use("/",require('./routes/index'))
 server.use(errorHandler)
 module.exports = server
