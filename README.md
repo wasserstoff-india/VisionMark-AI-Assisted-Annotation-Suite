@@ -47,11 +47,98 @@ Technologies used for creating the API's for authentication, autherization annot
 
 # Endpoints
 
-### BASE_URL="http://localhost:<PORT>"
+### BASE_URL="http://localhost:<-PORT->"
 
-## User management and authentication and authorization
+## Authentication and authorization
 
-* 
+1. POST -  BASE_URL/api/auth/login
+
+   * Request Body:
+
+    {
+        "email":"abc@gmail.com",
+        "password":"Abcde@1233"
+    }
+
+2. POST - BASE_URL/api/auth/register
+
+    * Request Body:
+
+    {
+        "name":"Abc",
+        "email":"abc@gmail.com",
+        "password":"Abcde@1233",
+        "contact_no":1111111111
+    }
+
+3.  POST - BASE_URL/api/auth/logout
+
+4. POST - BASE_URL/api/auth/refreshtoken
+
+## User management
+
+1. GET -  BASE_URL/api/user/
+
+2. GET - BASE_URL/api/user/:id
+
+    Path paramas key: id
+
+## Annotations
+
+1. GET -  BASE_URL/api/anotate/image
+
+2. POST - BASE_URL/api/anotate/image/
+
+    * Content-Type: multipart/form-data
+
+    {
+        "userId":"sad78sa5da5s",
+        "image":file
+    }
+
+3. POST - BASE_URL/api/anotate/image/:id
+
+    * Request Body:
+
+      {
+          "annotation":{
+              "label":"car",
+              "coordinates":{
+                  "x":65,
+                   "y":55
+                  },
+               "confidence":5
+           }
+      }
+
+4. GET - BASE_URL/api/anotate/image/:id
+
+    Path paramater key : id
+
+## Admin access
+
+1. GET -  BASE_URL/api/anotate/images
+
+2. GET - BASE_URL/api/anotate/images
+
+    Query paramter key : status
+   
+    Value enums: ["review","approved","rejected"]
+
+3. POST - BASE_URL/api/anotate/review/:id
+
+  Path parameter key: id
+
+  * Request Body:
+
+      {
+        "status":"approved"
+        }
+  * Status values can be "approved", "rejected" and "review".
+
+
+
+
 
 
 ### - Assumption for testing: First user will be 'admin' role user and other users will have 'user' role
