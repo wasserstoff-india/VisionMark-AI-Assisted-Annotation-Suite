@@ -45,6 +45,15 @@ Technologies used for creating the API's for authentication, autherization annot
    **npm start**
 
 
+# Endpoints
+
+### BASE_URL="http://localhost:<PORT>"
+
+## User management and authentication and authorization
+
+* 
+
+
 ### - Assumption for testing: First user will be 'admin' role user and other users will have 'user' role
 ### - Images are uploaded locally.
 ### - Swagger.json is incomplete
