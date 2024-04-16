@@ -1,0 +1,109 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+      "title": "Vision Mark - AI (API Docs)",
+      "description": "VisionMark is a cutting-edge, mobile-first application aimed at simplifying the data collection and annotation process for preparing training datasets for YOLO image recognition models. This task challenges you, as a backend developer candidate, to architect and implement the backend services for VisionMark. Your goal is to develop a scalable, efficient system capable of handling image processing, user management, automatic annotations, and data exporting functionalities.",
+      "termsOfService": "http://swagger.io/terms/",
+      "license": {
+        "name": "Apache 2.0",
+        "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+      },
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:8000/"
+      }
+    ],
+    "tags": [
+      {
+        "name": "User Management and authentication",
+        "description": "User authentication, autherization and management."
+      },
+      {
+        "name": "Annotation",
+        "description": "Image upload, automatic annotation and manual annotation."
+      },
+      {
+        "name": "Export Data",
+        "description": "Export approved data in csv, xml and json format."
+      }
+    ],
+    "paths": {
+      "/api/auth/login": {
+        "post": {
+          "tags": [
+            "User Management and authentication"
+          ],
+          "summary": "Login with valid credentials",
+          "description": "Login user with credentials",
+          "operationId": "login",
+          "requestBody": {
+            "description": "Update an existent pet in the store",
+            "content": {
+              "application/json": {
+                "schema": {
+                  
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pet"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pet"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Pet"
+                  }
+                },
+                "application/xml": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Pet"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid ID supplied"
+            },
+            "404": {
+              "description": "Pet not found"
+            },
+            "422": {
+              "description": "Validation exception"
+            }
+          },
+          "security": [
+            {
+              "petstore_auth": [
+                "write:pets",
+                "read:pets"
+              ]
+            }
+          ]
+        }
+       
+      }
+    },
+    "components": {
+      "securitySchemes": {
+        "JWT": {
+          "in": "header",
+          "name":"Authorization",
+          "type":"apiKey"
+        }
+      }
+    }
+  }
