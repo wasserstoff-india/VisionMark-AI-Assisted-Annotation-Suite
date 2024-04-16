@@ -42,7 +42,7 @@ Technologies used for creating the API's for authentication, autherization annot
 
 6. Run the following command
 
-   ** npm start **
+   **npm start**
 
 
 ### Assumption for testing: First user will be 'admin' role user and other users will have 'user' role
