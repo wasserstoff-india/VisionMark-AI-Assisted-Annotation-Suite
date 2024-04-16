@@ -127,14 +127,21 @@ Technologies used for creating the API's for authentication, autherization annot
 
 3. POST - BASE_URL/api/anotate/review/:id
 
-  Path parameter key: id
+    Path parameter key: id
 
-  * Request Body:
+     * Request Body:
 
-      {
-        "status":"approved"
-        }
-  * Status values can be "approved", "rejected" and "review".
+          {
+            "status":"approved"
+          }
+        
+    * Status values can be "approved", "rejected" and "review".
+  
+4. GET - BASE_URL/api/anotate/exportdata/:type
+
+      Path paramter key: type
+
+      Values of type can be "xml", "csv" or "json".
 
 
 
