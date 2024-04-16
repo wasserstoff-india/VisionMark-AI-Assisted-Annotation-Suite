@@ -1,5 +1,9 @@
 const mongoose = require('mongoose')
 const envVariables = require('./validate.env')
+
+/**
+ * Method to connect to mongoose to mongoDB
+ */
 const connectDB = async () => {
     try {
         const connectionInstance = await mongoose.connect(`${envVariables.mongodbUrl}`,{  useNewUrlParser: true,

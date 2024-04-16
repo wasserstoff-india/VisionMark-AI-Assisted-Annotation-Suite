@@ -3,6 +3,10 @@ const fs = require('fs')
 const multer = require('multer');
 const path = require('path');
 const IMAGE_PATH = path.join('public/images');
+
+/**
+ * Defining annotation schema
+ */
 const annotationSchema = new mongoose.Schema({
     label: {
       type: String,
@@ -13,6 +17,9 @@ const annotationSchema = new mongoose.Schema({
     }
   });
 
+  /**
+   * Image schema
+   */
 const imageSchema = new mongoose.Schema({
         userId:{
             type:mongoose.Schema.Types.ObjectId,
@@ -48,7 +55,12 @@ let storage = multer.diskStorage({
       cb(null, file.fieldname + '-' + Date.now());
     }
   });
+
+/**
+ * Static model methods
+ */
 imageSchema.statics.uploadImage = multer({storage:  storage}).single('image');
 imageSchema.statics.imagePath =IMAGE_PATH;
+
 const Image = mongoose.model('Image',imageSchema)
 module.exports= Image

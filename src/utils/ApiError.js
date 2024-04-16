@@ -1,3 +1,6 @@
+/**
+ * Generic error handling class
+ */
 class ApiError extends Error{
     constructor(status,message,stack=''){
         super(message);
