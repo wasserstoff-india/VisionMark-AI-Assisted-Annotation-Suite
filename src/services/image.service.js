@@ -25,3 +25,8 @@ module.exports.getAllImagesForUser=async(userId)=>{
   const images = await Image.find({userId:userId})
   return images
 }
+
+module.exports.getApprovedImagesWithCustomFields= async()=>{
+  const images = await Image.find({status:"approved"}).select("-userId -id -__v")
+  return images
+}
